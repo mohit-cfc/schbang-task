@@ -1,3 +1,5 @@
+const authRoute = require("./routes/auth");
+
 const express = require("express");
 const dbConnection = require("./utils/DBconnection");
 require("dotenv").config();
@@ -7,7 +9,11 @@ const app = express();
 app.use(express.json());
 app.use(require("cors")());
 
-app.listen(3000, async () => {
+const routePrefix = "api";
+
+app.use(`/${routePrefix}`, authRoute);
+
+app.listen(4000, async () => {
   try {
     await dbConnection(process.env.MONGO_URI);
     console.log("dbConnected at", process.env.MONGO_URI);
