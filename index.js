@@ -1,4 +1,5 @@
 const authRoute = require("./routes/auth");
+const courseRoute = require("./routes/course");
 
 const express = require("express");
 const dbConnection = require("./utils/DBconnection");
@@ -12,6 +13,7 @@ app.use(require("cors")());
 const routePrefix = "api";
 
 app.use(`/${routePrefix}`, authRoute);
+app.use(`/${routePrefix}/courses`, courseRoute);
 
 app.listen(4000, async () => {
   try {
