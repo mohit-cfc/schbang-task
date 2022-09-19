@@ -17,6 +17,19 @@ module.exports = {
       returnMessage.errorMessage(res, error);
     }
   },
+  showAll: async (req, res) => {
+    try {
+      const user = await authUser.getUser(req, res);
+      if (user) {
+        const courses = await courseModel.find({});
+        returnMessage.successMessage(res, "Got all Courses", courses);
+      } else {
+        returnMessage.errorMessage(res, "Not logged in");
+      }
+    } catch (error) {
+      returnMessage.errorMessage(res, error);
+    }
+  },
   create: async (req, res) => {
     try {
       const user = await authUser.getUser(req, res);
