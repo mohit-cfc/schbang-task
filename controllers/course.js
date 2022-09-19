@@ -8,7 +8,8 @@ module.exports = {
       const user = await authUser.getUser(req, res);
       if (user) {
         const courses = await courseModel.find({});
-        returnMessage.successMessage(res, "Got all Courses", courses);
+        const result = courses.filter((c) => c.isApproved == true);
+        returnMessage.successMessage(res, "Got all Approved Courses", result);
       } else {
         returnMessage.errorMessage(res, "Not logged in");
       }
@@ -100,13 +101,16 @@ module.exports = {
   },
   show: async (req, res) => {
     try {
-      const course = await courseModel.findOne({
-        _id: req.params["id"],
-      });
-      if (course.isApproved == true) {
-        returnMessage.successMessage(res, "Showing Course", course);
-      } else {
-        returnMessage.errorMessage(res, "Course not approved");
+      const user = await authUser.getUser(req, res);
+      if (user) {
+        const course = await courseModel.findOne({
+          _id: req.params["id"],
+        });
+        if (course.isApproved == true) {
+          returnMessage.successMessage(res, "Showing Course", course);
+        } else {
+          returnMessage.errorMessage(res, "Course not approved");
+        }
       }
     } catch (error) {
       returnMessage.errorMessage(res, error);
